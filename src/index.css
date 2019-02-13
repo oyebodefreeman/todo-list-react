@@ -1,0 +1,8 @@
+body {
+  font-family: 'Segoe UI' sans-serif;
+  line-height: 1.6;
+}
+
+* {
+  box-sizing: border-box;
+}
