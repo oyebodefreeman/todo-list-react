@@ -23,11 +23,12 @@ class App extends Component {
   }
 
   handleCheckChange(e) {
-    let span = e.target.parentNode.parentNode.childNodes[1];
+    let span = e.target.parentNode.childNodes[1];
     const todoList = this.getTodoList()
 
     if (e.target.checked) {
       span.style.textDecoration = "line-through";
+      span.style.color = "#ccc";
       todoList.map((item, index) => {
         if (span.innerHTML === item.text)
           item.completed = true
@@ -37,6 +38,7 @@ class App extends Component {
 
     } else {
       span.style.textDecoration = "none";
+      span.style.color = "#3c3a3acc";
       todoList.map((item, index) => {
         if (span.innerHTML === item.text)
           item.completed = false
@@ -60,6 +62,10 @@ class App extends Component {
     const todoList = this.getTodoList()
     todoList.push(newItem)
     localStorage.setItem("to-do", JSON.stringify(todoList))
+  }
+
+  removeTodoItem() {
+    const todoList = this.getTodoList()
   }
 
   handleInputSubmit(e) {
@@ -114,8 +120,8 @@ class App extends Component {
 const TodoList = (props) => (
   <div className="container">
     <h2 className="teal-text center">To-do List</h2>
-    <div className="row">
-      <div className="col s12 m8 offset-m2">
+    {/** <div className="row">
+      <div className="col s12 m5 offset-m3">
           <form onSubmit={props.handleInputSubmit}>
             <div className="input-field">
               <i className="material-icons prefix">create</i>
@@ -129,10 +135,10 @@ const TodoList = (props) => (
             </div>
           </form>
       </div>
-    </div>
+    </div> **/}
     <div className="row">
       <div className="col s12 m8 offset-m2">
-        <button className="btn waves-effect red" onClick={props.clearTodoList}>
+        <button className="btn waves-effect red lighten-2" onClick={props.clearTodoList}>
           <i className="material-icons left">clear</i>
           Clear List
         </button>
@@ -140,24 +146,29 @@ const TodoList = (props) => (
           {props.items.map((item) => {
             return (
               <li key={item.id}>
-                <div className="row">
-                  <label className="col s2">
-                    <input
-                      type="checkbox"
-                      defaultChecked={item.completed ? true : false}
-                      className="filled-in"
-                      onChange={props.handleCheckChange}
-                    />
-                    <span></span>
-                  </label>
-                  <span style={item.completed ? {textDecoration: "line-through"} : null} className="col s10">
-                    {item.text}
-                  </span>
-                </div>
+                  <div className="card">
+                    <label>
+                      <input
+                        type="checkbox"
+                        defaultChecked={item.completed ? true : false}
+                        className="filled-in"
+                        onChange={props.handleCheckChange}
+                      />
+                      <span style={item.completed ? {textDecoration: "line-through", color:"#ccc"} : null}>
+                        {item.text}
+                      </span>
+                    </label>
+                      <span className={item.completed ? 'material-icons right' : 'hide'}>clear</span>
+                  </div>
               </li>
             );
           })}
         </ul>
+        <div className="center">
+          <button className="btn-floating waves-effect green lighten-2">
+            <i className="material-icons">add</i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
