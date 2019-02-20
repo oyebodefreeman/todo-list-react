@@ -13,6 +13,7 @@ class App extends Component {
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleCheckChange = this.handleCheckChange.bind(this)
     this.handleInputSubmit = this.handleInputSubmit.bind(this)
+    this.removeTodoItem = this.removeTodoItem.bind(this)
     this.clearTodoList = this.clearTodoList.bind(this)
   }
 
@@ -23,12 +24,14 @@ class App extends Component {
   }
 
   handleCheckChange(e) {
-    let span = e.target.parentNode.childNodes[1];
+    let span = e.target.parentNode.childNodes[1]
+    let cancel = e.target.parentNode.parentNode.childNodes[1]
     const todoList = this.getTodoList()
 
     if (e.target.checked) {
       span.style.textDecoration = "line-through";
       span.style.color = "#ccc";
+      cancel.classList = "show"
       todoList.map((item, index) => {
         if (span.innerHTML === item.text)
           item.completed = true
@@ -39,6 +42,7 @@ class App extends Component {
     } else {
       span.style.textDecoration = "none";
       span.style.color = "#3c3a3acc";
+      cancel.classList = "hide"
       todoList.map((item, index) => {
         if (span.innerHTML === item.text)
           item.completed = false
@@ -64,8 +68,17 @@ class App extends Component {
     localStorage.setItem("to-do", JSON.stringify(todoList))
   }
 
-  removeTodoItem() {
-    const todoList = this.getTodoList()
+  removeTodoItem(e) {
+    const todoList = this.state.items
+    const text = e.target.parentNode.parentNode.childNodes[0].childNodes[1].innerHTML
+    const li = e.target.parentNode.parentNode
+    todoList.map((item, index)=> {
+      if(text == item.text) {
+        li.style.display = "none"
+        todoList.splice(index, 1)
+      }
+    })
+    localStorage.setItem('to-do', JSON.stringify(todoList))
   }
 
   handleInputSubmit(e) {
@@ -111,6 +124,7 @@ class App extends Component {
           handleInputSubmit={this.handleInputSubmit}
           text={this.state.text}
           items={items}
+          removeTodoItem={this.removeTodoItem}
           clearTodoList={this.clearTodoList}
         />
     );
@@ -120,7 +134,7 @@ class App extends Component {
 const TodoList = (props) => (
   <div className="container">
     <h2 className="teal-text center">To-do List</h2>
-    {/** <div className="row">
+    <div className="row">
       <div className="col s12 m5 offset-m3">
           <form onSubmit={props.handleInputSubmit}>
             <div className="input-field">
@@ -135,7 +149,7 @@ const TodoList = (props) => (
             </div>
           </form>
       </div>
-    </div> **/}
+    </div>
     <div className="row">
       <div className="col s12 m8 offset-m2">
         <button className="btn waves-effect red lighten-2" onClick={props.clearTodoList}>
@@ -158,17 +172,19 @@ const TodoList = (props) => (
                         {item.text}
                       </span>
                     </label>
-                      <span className={item.completed ? 'material-icons right' : 'hide'}>clear</span>
+                    <span className={item.completed ? "show" : "hide"} onClick={props.removeTodoItem} style={{cursor:"pointer"}}>
+                      <i className="material-icons right">clear</i>
+                    </span>
                   </div>
               </li>
             );
           })}
         </ul>
-        <div className="center">
+        {/**<div className="center">
           <button className="btn-floating waves-effect green lighten-2">
             <i className="material-icons">add</i>
           </button>
-        </div>
+        </div>**/}
       </div>
     </div>
   </div>
