@@ -5,9 +5,19 @@ h1, h2 {
 #todo-list li span {
   font-size: 1.1rem;
   color: #3c3a3acc;
-  padding-left: 30px;
 }
 
 .card {
   padding: 20px 25px !important;
+}
+
+.animate {
+  animation-name: fadeOut;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeOut {
+  from {opacity: 1;}
+  to {opacity: 0;}
 }

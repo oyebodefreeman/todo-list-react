@@ -71,10 +71,11 @@ class App extends Component {
   removeTodoItem(e) {
     const todoList = this.state.items
     const text = e.target.parentNode.parentNode.childNodes[0].childNodes[1].innerHTML
-    const li = e.target.parentNode.parentNode
+    const li = e.target.parentNode.parentNode.parentNode
     todoList.map((item, index)=> {
       if(text == item.text) {
-        li.style.display = "none"
+        li.classList = "animate";
+        setTimeout(() => {li.style.display = "none"}, 500)
         todoList.splice(index, 1)
       }
     })
@@ -173,7 +174,7 @@ const TodoList = (props) => (
                       </span>
                     </label>
                     <span className={item.completed ? "show" : "hide"} onClick={props.removeTodoItem} style={{cursor:"pointer"}}>
-                      <i className="material-icons right">clear</i>
+                      <i className="material-icons red-text darken-1 right">clear</i>
                     </span>
                   </div>
               </li>
