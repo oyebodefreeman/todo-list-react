@@ -24,8 +24,8 @@ class App extends Component {
   }
 
   handleCheckChange(e) {
-    let span = e.target.parentNode.childNodes[1]
-    let cancel = e.target.parentNode.parentNode.childNodes[1]
+    let span = e.target.nextElementSibling
+    let cancel = e.target.parentNode.nextElementSibling
     const todoList = this.getTodoList()
 
     if (e.target.checked) {
@@ -70,11 +70,11 @@ class App extends Component {
 
   removeTodoItem(e) {
     const todoList = this.state.items
-    const text = e.target.parentNode.parentNode.childNodes[0].childNodes[1].innerHTML
+    const text = e.target.parentNode.previousElementSibling.childNodes[1].textContent
     const li = e.target.parentNode.parentNode.parentNode
     todoList.map((item, index)=> {
       if(text == item.text) {
-        li.classList = "animate";
+        li.classList = "animate-remove";
         setTimeout(() => {li.style.display = "none"}, 500)
         todoList.splice(index, 1)
       }
@@ -123,10 +123,10 @@ class App extends Component {
           handleInputChange={this.handleInputChange}
           handleCheckChange={this.handleCheckChange}
           handleInputSubmit={this.handleInputSubmit}
-          text={this.state.text}
-          items={items}
           removeTodoItem={this.removeTodoItem}
           clearTodoList={this.clearTodoList}
+          text={this.state.text}
+          items={items}
         />
     );
   }
@@ -136,13 +136,13 @@ const TodoList = (props) => (
   <div className="container">
     <h2 className="teal-text center">To-do List</h2>
     <div className="row">
-      <div className="col s12 m5 offset-m3">
+      <div className="col s12 m8 offset-m2">
           <form onSubmit={props.handleInputSubmit}>
             <div className="input-field">
               <i className="material-icons prefix">create</i>
               <input
                 type="text"
-                placeholder="Add new to-do"
+                placeholder="Remind me to..."
                 value={props.text}
                 onChange={props.handleInputChange}
                 autoFocus
@@ -153,10 +153,6 @@ const TodoList = (props) => (
     </div>
     <div className="row">
       <div className="col s12 m8 offset-m2">
-        <button className="btn waves-effect red lighten-2" onClick={props.clearTodoList}>
-          <i className="material-icons left">clear</i>
-          Clear List
-        </button>
         <ul id="todo-list">
           {props.items.map((item) => {
             return (
@@ -181,11 +177,14 @@ const TodoList = (props) => (
             );
           })}
         </ul>
-        {/**<div className="center">
-          <button className="btn-floating waves-effect green lighten-2">
-            <i className="material-icons">add</i>
-          </button>
-        </div>**/}
+        <div className="row">
+          <div className="col">
+            <button className="btn waves-effect red lighten-2" onClick={props.clearTodoList}>
+              <i className="material-icons left">clear</i>
+              Clear List
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
