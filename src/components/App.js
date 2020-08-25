@@ -36,8 +36,6 @@ class App extends Component {
         if (span.innerHTML === item.text)
           item.completed = true
       })
-      // Store update
-      localStorage.setItem("to-do", JSON.stringify(todoList))
 
     } else {
       span.style.textDecoration = "none";
@@ -47,10 +45,11 @@ class App extends Component {
         if (span.innerHTML === item.text)
           item.completed = false
       })
-      // Store update
-      localStorage.setItem("to-do", JSON.stringify(todoList))
 
     }
+
+     // Store update
+    localStorage.setItem("to-do", JSON.stringify(todoList))
   }
 
   getTodoList() {
